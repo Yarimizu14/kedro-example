@@ -2,8 +2,9 @@ name: Deploy[DEV]
 
 on:
   push:
-    - main
-    - feat/github-actions-ci
+    branches:
+      - main
+      - feat/github-actions-ci
 
 jobs:
   build-and-push:
