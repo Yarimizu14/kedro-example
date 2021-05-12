@@ -1,0 +1,18 @@
+name: Deploy[DEV]
+
+on:
+  push:
+    - main
+    - feat/github-actions-ci
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 300
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build Image
+      run: |
+        docker build -t kedro-example .
