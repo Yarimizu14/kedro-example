@@ -1,7 +1,8 @@
-ARG BASE_IMAGE=python:3.6-buster
+ARG BASE_IMAGE=python:3.7-buster
 FROM $BASE_IMAGE
 
 # install project requirements
+RUN apt update && apt install libpq-dev
 COPY src/requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt && rm -f /tmp/requirements.txt
 
@@ -20,4 +21,4 @@ RUN chmod -R a+w /home/kedro
 
 EXPOSE 8888
 
-CMD ["kedro", "run"]
+CMD ["kedro", "run", "-e", "docker"]

@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:5.7
+    # volumes:
+    #   - ./tmp/db:/hoge/data
+    environment:
+      MYSQL_DATABASE: kedro_local
+      MYSQL_USER: kedro
+      MYSQL_ROOT_PASSWORD: kedro123
+      MYSQL_PASSWORD: kedro123
+    ports:
+      - "3306:3306"
+  kedro:
+    build: .
+    environment:
+      DB_HOST: db
+      DB_USER: kedro
+      DB_PASSWORD: kedro123
+    depends_on:
+      - db

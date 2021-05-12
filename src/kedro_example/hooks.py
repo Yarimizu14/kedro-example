@@ -27,9 +27,11 @@
 # limitations under the License.
 
 """Project hooks."""
+import os
 from typing import Any, Dict, Iterable, Optional
 
 from kedro.config import ConfigLoader
+from kedro.config import TemplatedConfigLoader
 from kedro.framework.hooks import hook_impl
 from kedro.io import DataCatalog
 from kedro.pipeline import Pipeline
@@ -59,7 +61,18 @@ class ProjectHooks:
 
     @hook_impl
     def register_config_loader(self, conf_paths: Iterable[str]) -> ConfigLoader:
-        return ConfigLoader(conf_paths)
+        globals = {}
+        if not (set(['DB_HOST', 'DB_USER', 'DB_PASSWORD']) - set(os.environ.keys())):
+            globals['dbconn'] = {
+                "host": os.environ.get('DB_HOST'),
+                "user": os.environ.get('DB_USER'),
+                "password": os.environ.get('DB_PASSWORD'),
+            }
+        return TemplatedConfigLoader(
+            conf_paths,
+            globals_pattern="*globals.yml",
+            globals_dict=globals
+        )
 
     @hook_impl
     def register_catalog(
