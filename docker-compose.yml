@@ -1,16 +1,16 @@
 version: "3.9"
 services:
   db:
-    image: postgres:13.1
-    command: ["postgres", "-c", "log_statement=all"]
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+    image: mysql:5.7
+    # volumes:
+    #   - ./tmp/db:/hoge/data
     environment:
-      POSTGRES_DB: kedro_local
-      POSTGRES_USER: kedro
-      POSTGRES_PASSWORD: kedro123
+      MYSQL_DATABASE: kedro_local
+      MYSQL_USER: kedro
+      MYSQL_ROOT_PASSWORD: kedro123
+      MYSQL_PASSWORD: kedro123
     ports:
-      - "5432:5432"
+      - "3306:3306"
   kedro:
     build: .
     environment:
